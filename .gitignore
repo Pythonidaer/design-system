@@ -37,3 +37,6 @@ pnpm-debug.log*
 
 # TypeScript
 *.tsbuildinfo
+
+# Pack artifacts (pnpm pack / npm pack)
+*.tgz

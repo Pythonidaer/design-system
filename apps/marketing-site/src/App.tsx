@@ -9,7 +9,7 @@ import {
   Footer,
   Container,
   Stack,
-} from '@jonnovative/ui';
+} from '@pythonidaer/ui';
 import styles from './App.module.css';
 
 const navLinks = [

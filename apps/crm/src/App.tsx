@@ -1,4 +1,4 @@
-import { Button, Card, Navigation, Footer, StatsBlock } from '@jonnovative/ui';
+import { Button, Card, Navigation, Footer, StatsBlock } from '@pythonidaer/ui';
 
 const navLinks = [
   { label: 'Dashboard', href: '/', current: true },

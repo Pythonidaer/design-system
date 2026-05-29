@@ -10,8 +10,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@jonnovative/tokens": "workspace:*",
-    "@jonnovative/ui": "workspace:*",
+    "@pythonidaer/tokens": "workspace:*",
+    "@pythonidaer/ui": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

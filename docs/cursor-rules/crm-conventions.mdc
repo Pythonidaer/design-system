@@ -1,10 +1,10 @@
 ---
-description: CRM-specific rules — how to consume @pythonidaer/ui correctly without overriding the design system.
-globs: apps/crm/**/*.{ts,tsx}
+description: CRM and consumer-app rules — how to consume @pythonidaer/ui correctly without overriding the design system.
+globs: src/**/*.{ts,tsx}
 alwaysApply: false
 ---
 
-# CRM Conventions
+# CRM / Consumer App Conventions
 
 ## Always Import from the Package
 
@@ -16,13 +16,21 @@ import { Button } from '../../../packages/ui/src/components/Button';
 import { Button } from '@pythonidaer/ui';
 ```
 
+## Load Styles at App Root
+
+```tsx
+// src/main.tsx — must be first CSS import
+import '@pythonidaer/ui/styles.css';
+// or: import '@pythonidaer/tokens/tokens.css';
+```
+
 ## Never Redefine Design System Components
 
 Do not re-create Button, Card, Input, or any component already in `@pythonidaer/ui`. Extend via composition:
 
 ```tsx
 // ❌ BAD — reinventing the wheel
-function CrmButton({ ... }) {
+function CrmButton() {
   return <button className="crm-btn" style={{ background: '#2563EB' }}>...</button>;
 }
 
@@ -37,7 +45,7 @@ function DealActionButton({ dealId }: { dealId: string }) {
 ```css
 /* ❌ BAD */
 :root {
-  --color-primary-500: #FF0000; /* Don't override tokens */
+  --color-primary-500: #FF0000;
 }
 
 /* ✅ GOOD — add CRM-specific tokens if needed */
@@ -47,9 +55,6 @@ function DealActionButton({ dealId }: { dealId: string }) {
 }
 ```
 
-## Load Tokens CSS at App Root
+## Page Layout
 
-```tsx
-// apps/crm/src/main.tsx
-import '@pythonidaer/tokens/tokens.css'; // ← must be first CSS import
-```
+Use CSS Modules with token variables only. No inline `style=` on JSX.

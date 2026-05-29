@@ -24,7 +24,7 @@ design-system/
 │   └── marketing-site/   — Marketing website
 ├── packages/
 │   ├── tokens/           — Design tokens (CSS vars + TS constants)
-│   ├── ui/               — Component library (@jonnovative/ui)
+│   ├── ui/               — Component library (@pythonidaer/ui)
 │   ├── eslint-config/    — Shared ESLint config
 │   └── tsconfig/         — Shared TypeScript configs
 └── .cursor/rules/        — Cursor AI enforcement rules
@@ -47,7 +47,7 @@ pnpm install
 
 ```bash
 # Start Storybook (component development)
-pnpm --filter @jonnovative/ui storybook
+pnpm --filter @pythonidaer/ui storybook
 
 # Start CRM app
 pnpm --filter @jonnovative/crm dev
@@ -69,7 +69,7 @@ pnpm test
 pnpm test:watch
 
 # Run tests for UI package only
-pnpm --filter @jonnovative/ui test
+pnpm --filter @pythonidaer/ui test
 ```
 
 ### Building
@@ -79,7 +79,7 @@ pnpm --filter @jonnovative/ui test
 pnpm build
 
 # Build UI library only
-pnpm --filter @jonnovative/ui build
+pnpm --filter @pythonidaer/ui build
 ```
 
 ### Linting & Formatting
@@ -100,7 +100,7 @@ pnpm type-check
 All design decisions live in `packages/tokens/src/tokens.css` as CSS custom properties. Import in any app:
 
 ```tsx
-import '@jonnovative/tokens/tokens.css';
+import '@pythonidaer/tokens/tokens.css';
 ```
 
 ### Color System
@@ -118,13 +118,43 @@ All color combinations meet **WCAG AA** (4.5:1 normal text, 3:1 large text).
 
 4px base scale: `--space-1` (4px) through `--space-32` (128px).
 
-## Component Library (`@jonnovative/ui`)
+## Component Library (`@pythonidaer/ui`)
 
 ### Import
 
 ```tsx
-import { Button, Card, Navigation, PricingCard } from '@jonnovative/ui';
-import '@jonnovative/tokens/tokens.css';
+import { Button, Card, Navigation, PricingCard } from '@pythonidaer/ui';
+import '@pythonidaer/ui/styles.css';
+```
+
+## npm packages
+
+Published to public npm under your **`@pythonidaer`** scope:
+
+| Package | Purpose |
+|---------|---------|
+| `@pythonidaer/tokens` | CSS variables + typography constants |
+| `@pythonidaer/ui` | React components (peer: react, react-dom) |
+
+**Install in an external app (e.g. CRM):**
+
+```bash
+pnpm add @pythonidaer/ui @pythonidaer/tokens react react-dom
+```
+
+**Docs:**
+
+- [Consuming in a CRM / external repo](docs/CONSUMING.md)
+- [Publishing & releases](docs/PUBLISHING.md)
+- [Extending tokens, components, LLM visual refresh](docs/EXTENDING.md)
+- [Portable Cursor rules for consumer repos](docs/cursor-rules/)
+
+**Release workflow (maintainers):**
+
+```bash
+pnpm changeset          # record what changed
+pnpm version-packages   # bump versions + changelogs
+pnpm release            # build + publish to npm
 ```
 
 ### Architecture
@@ -199,7 +229,7 @@ Rules (enforced by Cursor):
 
 ```bash
 # In the CRM, always import from the package:
-import { Button, Card } from '@jonnovative/ui';
+import { Button, Card } from '@pythonidaer/ui';
 
 # Never redefine components or override token colors
 ```
@@ -252,9 +282,9 @@ WORKFLOW FOR MODIFYING A COMPONENT
 1. Edit the token in packages/tokens/src/tokens.css if it is a design-value change.
 2. Edit ComponentName.module.css to change visual appearance (use var(--token-name)).
 3. Edit ComponentName.tsx to change API / behaviour.
-4. Run: pnpm --filter @jonnovative/ui test        ← must stay at 112/112 (or higher)
+4. Run: pnpm --filter @pythonidaer/ui test        ← must stay at 112/112 (or higher)
 5. Run: pnpm --filter @jonnovative/crm exec tsc --noEmit  ← must be zero errors
-6. Run: pnpm --filter @jonnovative/ui storybook   ← visually verify in browser
+6. Run: pnpm --filter @pythonidaer/ui storybook   ← visually verify in browser
 
 WORKFLOW FOR ADDING A NEW COMPONENT
 1. Decide tier: primitives / components / patterns
@@ -288,10 +318,10 @@ For this session, please:
    (color palette, spacing rhythm, border-radius, shadow scale, transition speeds).
 2. Update each component's .module.css to reflect the new visual language.
 3. Do NOT change any component APIs or test logic — only tokens and CSS.
-4. After CSS changes, confirm pnpm --filter @jonnovative/ui test still passes.
+4. After CSS changes, confirm pnpm --filter @pythonidaer/ui test still passes.
 5. Once the design system is refreshed, build a sample marketing webpage at
    apps/marketing-site/src/App.tsx that showcases every component in its best light,
-   using only @jonnovative/ui imports.
+   using only @pythonidaer/ui imports.
 ```
 
 ## Contributing

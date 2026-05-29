@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import '@jonnovative/tokens/tokens.css';
+import '@pythonidaer/tokens/tokens.css';
 import { App } from './App';
 
 const root = document.getElementById('root');

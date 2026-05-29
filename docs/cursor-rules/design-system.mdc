@@ -1,6 +1,6 @@
 ---
 description: Core design system standards for Jonnovative — tokens, no inline styles, no hardcoded colors. Applies to all component files.
-globs: packages/ui/src/**/*.{ts,tsx},apps/**/*.{ts,tsx}
+globs: packages/ui/src/**/*.{ts,tsx},apps/**/*.{ts,tsx},src/**/*.{ts,tsx}
 alwaysApply: false
 ---
 

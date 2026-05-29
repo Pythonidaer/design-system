@@ -12,9 +12,13 @@
     "build-storybook": "turbo run build-storybook",
     "type-check": "turbo run type-check",
     "clean": "turbo run clean && rm -rf node_modules",
-    "format": "prettier --write \"**/*.{ts,tsx,css,md,json}\" --ignore-path .gitignore"
+    "format": "prettier --write \"**/*.{ts,tsx,css,md,json}\" --ignore-path .gitignore",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.10",
     "prettier": "^3.3.3",
     "turbo": "^2.3.3"
   },

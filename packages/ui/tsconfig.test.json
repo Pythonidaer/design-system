@@ -5,8 +5,8 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "paths": {
-      "@jonnovative/tokens": ["../tokens/src/index.ts"],
-      "@jonnovative/tokens/tokens.css": ["../tokens/src/tokens.css"]
+      "@pythonidaer/tokens": ["../tokens/src/index.ts"],
+      "@pythonidaer/tokens/tokens.css": ["../tokens/src/tokens.css"]
     }
   },
   "include": ["src/**/*", "vite.config.ts"]
