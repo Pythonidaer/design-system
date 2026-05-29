@@ -1,0 +1,92 @@
+---
+description: Core design system standards for Jonnovative — tokens, no inline styles, no hardcoded colors. Applies to all component files.
+globs: packages/ui/src/**/*.{ts,tsx},apps/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Jonnovative Design System Rules
+
+## Token Usage — No Hardcoded Values
+
+All colors, spacing, typography, shadows, and radii MUST use CSS custom properties from `@jonnovative/tokens`.
+
+```tsx
+// ❌ BAD — hardcoded values
+<div style={{ color: '#2563EB', padding: '16px' }}>
+
+// ✅ GOOD — CSS Modules with token variables
+<div className={styles.card}>
+```
+
+```css
+/* ❌ BAD */
+.card { color: #2563EB; padding: 16px; }
+
+/* ✅ GOOD */
+.card { color: var(--color-primary-600); padding: var(--space-4); }
+```
+
+## No Inline Styles
+
+Never use the `style=` JSX attribute. All styling goes in `.module.css` files.
+
+```tsx
+// ❌ BAD
+<button style={{ backgroundColor: 'blue' }}>
+
+// ✅ GOOD
+<button className={styles.button}>
+```
+
+## No `any` Types
+
+```tsx
+// ❌ BAD
+function process(data: any) {}
+
+// ✅ GOOD
+function process(data: Record<string, unknown>) {}
+```
+
+## Component API Requirements
+
+Every component in `packages/ui` MUST:
+- Export a fully typed `Props` interface
+- Accept `className` for extension
+- Accept `data-testid` for testing
+- Have a companion `.stories.tsx`, `.test.tsx`, and `.a11y.test.tsx`
+
+```tsx
+// ✅ Correct shape
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary';
+  'data-testid'?: string;
+}
+```
+
+## No Business Logic in `packages/ui`
+
+The UI package must stay framework-agnostic. Never add:
+- API calls / fetch
+- React Router / navigation side-effects
+- Global state (Zustand, Redux, Context that holds server data)
+- Authentication checks
+
+## Import Rules for App Packages
+
+```tsx
+// ❌ BAD — importing from internal paths
+import { Button } from '../../packages/ui/src/components/Button';
+
+// ✅ GOOD — always use the package name
+import { Button } from '@jonnovative/ui';
+```
+
+## Atomic Structure
+
+Follow the strict three-tier hierarchy:
+1. `primitives/` — Box, Text, Stack, Container (no business meaning)
+2. `components/` — Button, Card, Input (UI semantics, no domain logic)
+3. `patterns/` — Navigation, PricingCard, Footer (composed, page-level)
+
+Never import from a higher tier into a lower tier.

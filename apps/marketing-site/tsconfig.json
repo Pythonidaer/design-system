@@ -1,0 +1,7 @@
+{
+  "extends": "@jonnovative/tsconfig/react.json",
+  "compilerOptions": {
+    "baseUrl": "."
+  },
+  "include": ["src"]
+}

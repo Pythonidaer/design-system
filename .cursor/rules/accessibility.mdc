@@ -1,0 +1,75 @@
+---
+description: Accessibility standards for Jonnovative UI — WCAG AA minimum. Applies to all React component files.
+globs: packages/ui/src/**/*.tsx,apps/**/*.tsx
+alwaysApply: false
+---
+
+# Accessibility Standards (WCAG AA)
+
+## Color Contrast Minimums
+
+- Normal text (< 18px / < 14px bold): **4.5:1** contrast ratio
+- Large text (≥ 18px / ≥ 14px bold): **3:1** contrast ratio
+- Use semantic color tokens that are pre-verified:
+  - Text on white: `--color-neutral-700` or darker ✓
+  - Primary text: `--color-primary-700` on white ✓ (8.59:1)
+  - Error text: `--color-error-600` on white ✓ (4.63:1)
+
+## Interactive Elements
+
+Every interactive element MUST:
+- Be focusable via keyboard
+- Show a visible focus ring using `var(--focus-ring)`
+- Have an accessible name (`aria-label`, `aria-labelledby`, or visible label)
+
+```tsx
+// ❌ BAD — no accessible name
+<button onClick={close}>✕</button>
+
+// ✅ GOOD
+<button onClick={close} aria-label="Close dialog">✕</button>
+```
+
+## Form Fields
+
+Every form input MUST have an associated `<label>`:
+
+```tsx
+// ❌ BAD — no label
+<input type="email" placeholder="Email" />
+
+// ✅ GOOD — use FormField wrapper
+<FormField label="Email" htmlFor="email">
+  <Input id="email" type="email" />
+</FormField>
+```
+
+Error states require both visual indication AND `aria-invalid` + `aria-describedby`:
+
+```tsx
+<Input error aria-invalid="true" aria-describedby="email-error" />
+<p id="email-error" role="alert">Invalid email address.</p>
+```
+
+## Images
+
+All `<img>` elements MUST have descriptive `alt` text. Empty `alt=""` is only acceptable for purely decorative images.
+
+```tsx
+// ❌ BAD
+<img src="/logo.svg" />
+
+// ✅ GOOD
+<img src="/logo.svg" alt="Acme Inc." />
+```
+
+## Accessibility Testing
+
+Every component MUST include an `.a11y.test.tsx` with zero violations:
+
+```tsx
+it('has no accessibility violations', async () => {
+  const { container } = render(<Button variant="primary">Submit</Button>);
+  expect(await axe(container)).toHaveNoViolations();
+});
+```

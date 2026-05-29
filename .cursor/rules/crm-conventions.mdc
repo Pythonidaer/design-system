@@ -1,0 +1,55 @@
+---
+description: CRM-specific rules — how to consume @jonnovative/ui correctly without overriding the design system.
+globs: apps/crm/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# CRM Conventions
+
+## Always Import from the Package
+
+```tsx
+// ❌ BAD
+import { Button } from '../../../packages/ui/src/components/Button';
+
+// ✅ GOOD
+import { Button } from '@jonnovative/ui';
+```
+
+## Never Redefine Design System Components
+
+Do not re-create Button, Card, Input, or any component already in `@jonnovative/ui`. Extend via composition:
+
+```tsx
+// ❌ BAD — reinventing the wheel
+function CrmButton({ ... }) {
+  return <button className="crm-btn" style={{ background: '#2563EB' }}>...</button>;
+}
+
+// ✅ GOOD — compose
+function DealActionButton({ dealId }: { dealId: string }) {
+  return <Button variant="primary" onClick={() => openDeal(dealId)}>Open Deal</Button>;
+}
+```
+
+## Never Override Token Colors
+
+```css
+/* ❌ BAD */
+:root {
+  --color-primary-500: #FF0000; /* Don't override tokens */
+}
+
+/* ✅ GOOD — add CRM-specific tokens if needed */
+:root {
+  --crm-deal-won: var(--color-success-600);
+  --crm-deal-lost: var(--color-error-600);
+}
+```
+
+## Load Tokens CSS at App Root
+
+```tsx
+// apps/crm/src/main.tsx
+import '@jonnovative/tokens/tokens.css'; // ← must be first CSS import
+```

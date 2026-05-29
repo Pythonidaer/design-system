@@ -1,0 +1,64 @@
+---
+description: Testing standards for the Jonnovative Design System — Vitest + RTL + jest-axe.
+globs: packages/ui/src/**/*.{test,a11y.test}.tsx
+alwaysApply: false
+---
+
+# Testing Standards
+
+## Required Files per Component
+
+Every component in `packages/ui` requires three test files:
+
+| File | Purpose |
+|------|---------|
+| `Component.test.tsx` | Unit + interaction tests |
+| `Component.a11y.test.tsx` | Accessibility violations (zero tolerance) |
+| `Component.stories.tsx` | Storybook documentation |
+
+## Unit Test Checklist
+
+```tsx
+describe('Button', () => {
+  it('renders children')                    // ✓ renders
+  it('applies correct variant class')       // ✓ prop → class
+  it('fires onClick')                       // ✓ event
+  it('does not fire onClick when disabled') // ✓ disabled state
+  it('shows spinner when loading')          // ✓ loading state
+  it('forwards ref')                        // ✓ ref forwarding
+});
+```
+
+## Accessibility Test Template
+
+```tsx
+import { render } from '@testing-library/react';
+import { axe } from '../../test-setup';
+
+it('has no accessibility violations', async () => {
+  const { container } = render(<MyComponent />);
+  expect(await axe(container)).toHaveNoViolations();
+});
+```
+
+## No Snapshots
+
+Do NOT use `toMatchSnapshot()` — it masks regressions and breaks across environments.
+
+## Query Priority (RTL)
+
+Prefer queries in this order (most accessible → least):
+1. `getByRole` — mimics how assistive tech finds elements
+2. `getByLabelText` — for form fields
+3. `getByText` — for visible text
+4. `getByTestId` — last resort, requires `data-testid` prop
+
+## Do Not Test Implementation Details
+
+```tsx
+// ❌ BAD — testing internal state
+expect(component.state.isOpen).toBe(true);
+
+// ✅ GOOD — testing user-visible behavior
+expect(screen.getByRole('dialog')).toBeInTheDocument();
+```
